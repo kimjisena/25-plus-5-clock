@@ -22,11 +22,11 @@ function Timer() {
         {/**start_stop and reset goes into the controls container */}
         <div id='controls' className={`w-[40%] h-[20%] flex justify-evenly items-center`}>
 
-            <div id='start_stop' className={`w-8 h-8 flex justify-center items-center bg-green rounded-md`}>
+            <div id='start_stop' className={`w-8 h-8 flex justify-center items-center bg-green rounded-md hover:cursor-pointer shadow-black active:shadow-inner shadow-sm`}>
                 <VscDebugStart className={`text-black`}  size={`24px`} />
             </div>
 
-            <div id='reset' className={`w-8 h-8 flex justify-center items-center bg-green rounded-md`}>
+            <div id='reset' className={`w-8 h-8 flex justify-center items-center bg-green rounded-md hover:cursor-pointer shadow-black active:shadow-inner shadow-sm`}>
                 <VscDebugRestart className={`text-black`}  size={`24px`} />
             </div>
         </div>

@@ -5,7 +5,7 @@ import Timer from './components/Timer';
 function App() {
   return (
     <div className={`w-full h-[100vh] flex justify-center items-center`}>
-        <div className={`wrapper flex flex-col justify-center items-center w-96 h-96 bg-white border-8 border-black rounded-3xl`}>
+        <div className={`wrapper flex flex-col justify-center items-center w-96 h-96 bg-white border-8 border-black rounded-3xl shadow-black shadow-inner`}>
             <div className={`labels-wrapper flex w-full h-1/3`}>
                 <GenericLabel name={`Break`} length={5} />
                 <GenericLabel name={`Session`} length={25} />
