@@ -2,3 +2,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+#session-prev, #break-prev {
+    transform-origin: 50% 100%;
+    transform: rotateX(-30deg);
+}
+
+#session-next, #break-next {
+    transform-origin: 50% 0%;
+    transform: rotateX(30deg);
+}

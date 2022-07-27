@@ -9,7 +9,8 @@ module.exports = {
       'black': '#444549',
       'red': '#F73349',
       'green': '#01D86D',
-      'orange': '#C56F17'
+      'orange': '#C56F17',
+      'gray': '#696969'
     },
     fontFamily: {
       'font-one': ['Montserrat', 'sans-serif'],
