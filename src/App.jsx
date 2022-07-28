@@ -60,15 +60,28 @@ function App() {
         }
     }
 
-    const switchTimer = () => {
-
-    }
-
     let mins, secs;
     mins = Number(timeLeft[0]);
     secs = Number(timeLeft[1]);
 
     const countdown = () => {
+
+        const switchTimer = () => {
+            if (session) {
+                mins = breakLength;
+                secs = 0;
+                setSession(false); // oops, time for a break
+                setTimeLeft([`${breakLength}`, '00']);
+            } else { // get back to session
+                setSession(true);
+                mins = sessionLength;
+                secs = 0;
+                setTimeLeft([`${sessionLength}`, '00']);
+            }
+
+            // setCounting(true);
+            //countId = setInterval(countdown, 1000);
+        }
 
         if (secs > 0) { // we have seconds
             secs--;
@@ -82,9 +95,9 @@ function App() {
                 setTimeLeft([`${mins < 10 ? `0${mins}` : mins}`, `${secs}`]);
             } else {
                 console.log(`Time is over: ${mins < 10 ? `0${mins}` : mins}:${secs < 10 ? `0${secs}` : secs}`);
-                clearInterval(countId); // don't call it again
-                setCounting(false); // stop counting
-                //setCountId(null); // i mean it
+                //clearInterval(countId); // don't call it again
+                // setCounting(false); // stop counting
+                switchTimer(); // switch between session and break
             }
         }
     }
@@ -121,7 +134,7 @@ function App() {
                     <GenericLabel name={`Session`} length={sessionLength} clickHandler={handleDurationLength} />
                 </div>
                 <div className={`timer-wrapper w-full h-2/3 flex flex-col justify-evenly items-center`}>
-                    <Timer clickHandler={handleTimer} timeLeft={timeLeft.join(':')} counting={counting} />
+                    <Timer clickHandler={handleTimer} timeLeft={timeLeft.join(':')} counting={counting} session={session} />
                 </div>
             </div>
         </div>
