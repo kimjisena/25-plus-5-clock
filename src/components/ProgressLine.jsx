@@ -1,6 +1,9 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 
 function ProgressLine({width}) {
+
+    const [degree, setDegree] = useState(1);
+    const [go, setGo] = useState(false);
 
     useEffect(() => {
         // oops, component has mounted
@@ -21,7 +24,29 @@ function ProgressLine({width}) {
         // display the magic
         //node.style.backgroundColor = '#C56F17';
         line.style.backgroundColor = '#F73349';
-    });
+
+        setGo(true);
+    }, [width]);
+
+    const handleRotation = () => {
+        let rotateId;
+
+        function rotate () {
+            if (degree === 360) {
+                clearInterval(rotateId);
+                return (0);
+            }
+            const progress = document.getElementById('line');
+            progress.style.transform = `rotate(-${degree})deg`;
+            setDegree(degree + 1);
+        }
+        
+        rotateId = setInterval(rotate, 166.67);
+    }
+
+    if (go) {
+        handleRotation();
+    }
 
     return (
         <div>
