@@ -12,3 +12,7 @@
     transform-origin: 50% 0%;
     transform: rotateX(30deg);
 }
+
+.line {
+    transform-origin: 0% 100%;
+}
