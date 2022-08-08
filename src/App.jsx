@@ -100,31 +100,13 @@ function App() {
                 switchTimer(); // switch between session and break
             }
         }
-    }
+    };
 
 
-    const handleTimer = (event) => {
-        let control = event.currentTarget.id;
-        if (control === 'reset') {
-            if (counting) { // stop any counter
-                clearInterval(countId); 
-                setCounting(false);
-            }
-            setBreakLength(5);
-            setSessionLength(25);
-            setTimeLeft(['25', '00']);
-            
-        } else if (control === 'start_stop') {
-            console.log('start or stop');
-            if (counting) { // stop counting
-                clearInterval(countId); 
-                setCounting(false);
-            } else { // start counting
-                setCounting(true);
-                countId = setInterval(countdown, 1000);
-            }
-        }
-    }
+    const resetLengths = () => {
+        setBreakLength(5);
+        setSessionLength(25);
+    };
 
     return (
         <div className={`w-full h-[100vh] flex justify-center items-center`}>
@@ -134,7 +116,7 @@ function App() {
                     <GenericLabel name={`Session`} length={sessionLength} clickHandler={handleDurationLength} />
                 </div>
                 <div className={`timer-wrapper w-full h-2/3 flex flex-col justify-evenly items-center`}>
-                    <Timer clickHandler={handleTimer} timeLeft={timeLeft.join(':')} counting={counting} session={session} />
+                    <Timer sessionLength={sessionLength} breakLength={breakLength} resetLengths={resetLengths} counting={counting} session={session} />
                 </div>
             </div>
         </div>
