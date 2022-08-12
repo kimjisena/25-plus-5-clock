@@ -6,6 +6,7 @@ function App() {
     const [breakLength, setBreakLength] = useState(5);
     const [sessionLength, setSessionLength] = useState(25);
     const [session, setSession] = useState(true);
+    const [isDisabled, setIsDisabled] = useState(false);
 
     const incrementDuration = (duration) => {
         if (duration === 'break') {
@@ -58,15 +59,19 @@ function App() {
         setSession(!session);
     }
 
+    const handleLengthSetters = (signal) => {
+        setIsDisabled(signal);
+    }
+
     return (
         <div className={`w-full h-[100vh] flex justify-center items-center`}>
             <div className={`wrapper flex flex-col justify-center items-center w-96 h-96 bg-white border-8 border-black rounded-3xl shadow-black shadow-inner`}>
                 <div className={`labels-wrapper flex justify-evenly w-full h-1/3`}>
-                    <GenericLabel name={`Break`} length={breakLength} clickHandler={handleDurationLength} />
-                    <GenericLabel name={`Session`} length={sessionLength} clickHandler={handleDurationLength} />
+                    <GenericLabel name={`Break`} length={breakLength} clickHandler={isDisabled ? () => null :  handleDurationLength} />
+                    <GenericLabel name={`Session`} length={sessionLength} clickHandler={isDisabled ? () => null : handleDurationLength} />
                 </div>
                 <div className={`timer-wrapper w-full h-2/3 flex flex-col justify-evenly items-center`}>
-                    <Timer lengthLabel={ session ? sessionLength : breakLength } resetLengths={resetLengths} flipTimer={flipTimer} label={session ? 'Session': 'Break'} />
+                    <Timer lengthLabel={ session ? sessionLength : breakLength } resetLengths={resetLengths} flipTimer={flipTimer} handleLengthSetters={handleLengthSetters} label={session ? 'Session': 'Break'} />
                 </div>
             </div>
         </div>

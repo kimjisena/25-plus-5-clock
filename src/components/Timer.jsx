@@ -5,7 +5,7 @@ import {VscDebugPause} from 'react-icons/vsc';
 import {VscDebugStart} from 'react-icons/vsc';
 import {VscDebugRestart} from 'react-icons/vsc';
 
-function Timer({ lengthLabel, resetLengths, flipTimer, label }) {
+function Timer({ lengthLabel, resetLengths, flipTimer, handleLengthSetters, label }) {
     const [mins, setMins] = useState(lengthLabel);
     const [secs, setSecs] = useState(0);
     const [isCounting, setIsCounting] = useState(false);
@@ -42,24 +42,23 @@ function Timer({ lengthLabel, resetLengths, flipTimer, label }) {
     }, isCounting ? 1000 : null);
 
 
-    const handleStartStop = (event) => {
-        let control = event.currentTarget.id;
-        if (control === 'start_stop') {
-            setIsCounting(!isCounting);
-        }
-    };
-
-    const handleReset = (event) => {
-        let control = event.currentTarget.id;
-        if (control === 'reset') {
+    const handleStartStop = () => {
+        if (isCounting) {
             setIsCounting(false);
-            setMins(lengthLabel);
-            setSecs(0);
-            resetLengths();
+            handleLengthSetters(false);
+        } else {
+            setIsCounting(true);
+            handleLengthSetters(true);
         }
     };
 
-
+    const handleReset = () => {
+        setIsCounting(false);
+        setMins(lengthLabel);
+        setSecs(0);
+        resetLengths();
+        handleLengthSetters(false);
+    };
 
   return (
     <>
@@ -79,11 +78,11 @@ function Timer({ lengthLabel, resetLengths, flipTimer, label }) {
         {/**start_stop and reset goes into the controls container */}
         <div id='controls' className={`w-[40%] h-[20%] flex justify-evenly items-center`}>
 
-            <div id='start_stop' onClick={(ev) => handleStartStop(ev)} className={`w-8 h-8 flex justify-center items-center bg-green rounded-md hover:cursor-pointer shadow-black active:shadow-inner shadow-sm`}>
+            <div id='start_stop' onClick={() => handleStartStop()} className={`w-8 h-8 flex justify-center items-center bg-green rounded-md hover:cursor-pointer shadow-black active:shadow-inner shadow-sm`}>
                 {isCounting ? <VscDebugPause className={`text-black`}  size={`24px`} /> : <VscDebugStart className={`text-black`}  size={`24px`} />}
             </div>
 
-            <div id='reset' onClick={(ev) => handleReset(ev)} className={`w-8 h-8 flex justify-center items-center bg-green rounded-md hover:cursor-pointer shadow-black active:shadow-inner shadow-sm`}>
+            <div id='reset' onClick={() => handleReset()} className={`w-8 h-8 flex justify-center items-center bg-green rounded-md hover:cursor-pointer shadow-black active:shadow-inner shadow-sm`}>
                 <VscDebugRestart className={`text-black`}  size={`24px`} />
             </div>
         </div>
