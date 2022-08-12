@@ -6,23 +6,19 @@ import {VscDebugStart} from 'react-icons/vsc';
 import {VscDebugRestart} from 'react-icons/vsc';
 
 function Timer({ lengthLabel, resetLengths, flipTimer, label }) {
-    const [mins, setMins] = useState(25);
+    const [mins, setMins] = useState(lengthLabel);
     const [secs, setSecs] = useState(0);
     const [isCounting, setIsCounting] = useState(false);
 
     useEffect(() => {
         setMins(lengthLabel);
         setSecs(0);
-    }, [lengthLabel]);
+    }, [lengthLabel, label]);
 
     const countdown = () => {
-
         if (secs > 0) {
             // we have seconds
             setSecs(s => {
-                // log the current time
-                console.log(`Time: ${mins < 10 ? `0${mins}` : mins}:${secs < 10 ? `0${secs}` : secs}`);
-    
                 return (s - 1);
             });
         } else {
@@ -32,14 +28,11 @@ function Timer({ lengthLabel, resetLengths, flipTimer, label }) {
     
                 // update minutes count
                 setMins(m => {
-                    // log the current time
-                    console.log(`Time: ${mins < 10 ? `0${mins}` : mins}:${secs < 10 ? `0${secs}` : secs}`);
-    
                     return (m - 1);
                 });
             } else {
-                console.log(`Time is over: ${mins < 10 ? `0${mins}` : mins}:${secs < 10 ? `0${secs}` : secs}`);
-                setIsCounting(false);
+                flipTimer();
+                // setIsCounting(false);
             }
         }
     };
