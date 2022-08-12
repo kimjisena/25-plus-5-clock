@@ -2,26 +2,15 @@ import React, {useState} from 'react';
 import GenericLabel from './components/GenericLabel';
 import Timer from './components/Timer';
 
-
-let countId;
-
 function App() {
     const [breakLength, setBreakLength] = useState(5);
     const [sessionLength, setSessionLength] = useState(25);
-    const [timeLeft, setTimeLeft] = useState(['25', '00']);
-    // const [countId, setCountId] = useState(null);
-
-    // const [minutes, setMinutes] = useState(8);
-    // const [seconds, setSeconds] = useState(3);
-
-    const [counting, setCounting] = useState(false);
     const [session, setSession] = useState(true);
 
     const incrementDuration = (duration) => {
         if (duration === 'break') {
             setBreakLength(breakLength + 1);
         } else {
-            setTimeLeft([`${sessionLength + 1}`, '00']);
             setSessionLength(sessionLength + 1);
         }
     };
@@ -30,7 +19,6 @@ function App() {
         if (duration === 'break') {
             setBreakLength(breakLength - 1);
         } else {
-            setTimeLeft([`${sessionLength - 1}`, '00']);
             setSessionLength(sessionLength - 1);
         }
     }
@@ -60,53 +48,15 @@ function App() {
         }
     }
 
-    let mins, secs;
-    mins = Number(timeLeft[0]);
-    secs = Number(timeLeft[1]);
-
-    const countdown = () => {
-
-        const switchTimer = () => {
-            if (session) {
-                mins = breakLength;
-                secs = 0;
-                setSession(false); // oops, time for a break
-                setTimeLeft([`${breakLength}`, '00']);
-            } else { // get back to session
-                setSession(true);
-                mins = sessionLength;
-                secs = 0;
-                setTimeLeft([`${sessionLength}`, '00']);
-            }
-
-            // setCounting(true);
-            //countId = setInterval(countdown, 1000);
-        }
-
-        if (secs > 0) { // we have seconds
-            secs--;
-            console.log(`Time: ${mins < 10 ? `0${mins}` : mins}:${secs < 10 ? `0${secs}` : secs}`);
-            setTimeLeft([`${mins < 10 ? `0${mins}` : mins}`, `${secs < 10 ? `0${secs}` : secs}`]);
-        } else {
-            if (mins > 0) { // we have minutes
-                mins--;
-                secs = 59;
-                console.log(`Time: ${mins}:${secs}`);
-                setTimeLeft([`${mins < 10 ? `0${mins}` : mins}`, `${secs}`]);
-            } else {
-                console.log(`Time is over: ${mins < 10 ? `0${mins}` : mins}:${secs < 10 ? `0${secs}` : secs}`);
-                //clearInterval(countId); // don't call it again
-                // setCounting(false); // stop counting
-                switchTimer(); // switch between session and break
-            }
-        }
-    };
-
-
     const resetLengths = () => {
         setBreakLength(5);
         setSessionLength(25);
+        setSession(true);
     };
+
+    const flipTimer = () => {
+        setSession(!session);
+    }
 
     return (
         <div className={`w-full h-[100vh] flex justify-center items-center`}>
@@ -116,7 +66,7 @@ function App() {
                     <GenericLabel name={`Session`} length={sessionLength} clickHandler={handleDurationLength} />
                 </div>
                 <div className={`timer-wrapper w-full h-2/3 flex flex-col justify-evenly items-center`}>
-                    <Timer sessionLength={sessionLength} breakLength={breakLength} resetLengths={resetLengths} counting={counting} session={session} />
+                    <Timer lengthLabel={ session ? sessionLength : breakLength } resetLengths={resetLengths} flipTimer={flipTimer} label={session ? 'Session': 'Break'} />
                 </div>
             </div>
         </div>
