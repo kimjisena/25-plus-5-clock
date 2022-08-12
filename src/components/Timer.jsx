@@ -6,33 +6,24 @@ import {VscDebugStart} from 'react-icons/vsc';
 import {VscDebugRestart} from 'react-icons/vsc';
 
 function Timer({ lengthLabel, resetLengths, flipTimer, disableLengthSetters, label }) {
-    const [mins, setMins] = useState(lengthLabel);
-    const [secs, setSecs] = useState(0);
+    const [time, setTime] = useState(lengthLabel);
     const [isCounting, setIsCounting] = useState(false);
 
     useEffect(() => {
-        setMins(lengthLabel);
-        setSecs(0);
+        let audio = document.getElementById('beep');
+        audio.volume = 0.4;
+        setTime(lengthLabel);
     }, [lengthLabel, label]);
 
     const countdown = () => {
-        if (secs > 0) {
-            // we have seconds
-            setSecs(s => {
-                return (s - 1);
-            });
-        } else {
-            if (mins > 0) {
-                // we have minutes but no seconds
-                setSecs(59);
-    
-                // update minutes count
-                setMins(m => {
-                    return (m - 1);
-                });
-            } else {
-                flipTimer();
+        if (time > 0) {
+            if (time === 49) {
+                let audio = document.getElementById('beep');
+                audio.play();
             }
+            setTime(time - 1);
+        } else {
+            flipTimer();
         }
     };
 
@@ -43,21 +34,44 @@ function Timer({ lengthLabel, resetLengths, flipTimer, disableLengthSetters, lab
 
     const handleStartStop = () => {
         if (isCounting) {
+            // stop the beep
+            if (time < 49) {
+                let audio = document.getElementById('beep');
+                audio.pause();
+            }
             setIsCounting(false);
             disableLengthSetters(false);
         } else {
+            // play the beep
+            if (time < 49) {
+                let audio = document.getElementById('beep');
+                audio.play();
+            }
             setIsCounting(true);
             disableLengthSetters(true);
         }
     };
 
     const handleReset = () => {
+        // stop the beep
+        if (time < 49) {
+            let audio = document.getElementById('beep');
+            audio.pause();
+            audio.currentTime = 0;
+        }
         setIsCounting(false);
-        setMins(lengthLabel);
-        setSecs(0);
+        setTime(lengthLabel);
         resetLengths();
         disableLengthSetters(false);
     };
+
+    const  clockify = () => {
+        let minutes = Math.floor(time / 60);
+        let seconds = time - minutes * 60;
+        seconds = seconds < 10 ? '0' + seconds : seconds;
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        return minutes + ':' + seconds;
+      }
 
   return (
     <>
@@ -70,7 +84,7 @@ function Timer({ lengthLabel, resetLengths, flipTimer, disableLengthSetters, lab
 
             <div id='clock-labels' className={`absolute bottom-[30%] flex flex-col items-center w-[70%] h-[40%%] text-black`}>
                 <div id='timer-label' className={`text-xl font-font-one font-bold`}>{label}</div>
-                <div id='time-left' className={`text-5xl font-font-two font-bold`}>{ mins < 10 ? `0${mins}` : `${mins}`}:{ secs < 10 ? `0${secs}` : `${secs}` }</div>
+                <div id='time-left' className={`text-5xl font-font-two font-bold`}>{clockify()}</div>
             </div>
         </div>
 
@@ -85,6 +99,7 @@ function Timer({ lengthLabel, resetLengths, flipTimer, disableLengthSetters, lab
                 <VscDebugRestart className={`text-black`}  size={`24px`} />
             </div>
         </div>
+        <audio id='beep' src='/audios/beep.mp3' />
     </>
   );
 }

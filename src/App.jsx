@@ -71,7 +71,7 @@ function App() {
                     <GenericLabel name={`Session`} length={sessionLength} clickHandler={isDisabled ? () => null : handleDurationLength} />
                 </div>
                 <div className={`timer-wrapper w-full h-2/3 flex flex-col justify-evenly items-center`}>
-                    <Timer lengthLabel={ session ? sessionLength : breakLength } resetLengths={resetLengths} flipTimer={flipTimer} disableLengthSetters={handleLengthSetters} label={session ? 'Session': 'Break'} />
+                    <Timer lengthLabel={ session ? (sessionLength * 60) : (breakLength * 60) } resetLengths={resetLengths} flipTimer={flipTimer} disableLengthSetters={handleLengthSetters} label={session ? 'Session': 'Break'} />
                 </div>
             </div>
         </div>

@@ -1,4 +1,5 @@
 import { useRef, useEffect } from "react";
+import accurateSetInterval from "../lib/accurateSetInterval";
 
 export default function useInterval (callback, delay) {
     let savedCallback = useRef();
@@ -8,13 +9,17 @@ export default function useInterval (callback, delay) {
     }, [callback]);
 
     useEffect(() => {
+        let interval;
+
         const tick = () => {
             savedCallback.current();
         };
 
         if (delay !== null) {
-            let id = setInterval(tick, delay);
-            return () => clearInterval(id);
+            interval = accurateSetInterval(tick, delay);
+            return () => interval.cancel();
+        } else if (interval) {
+            return () => interval.cancel();
         }
     }, [delay]);
 }
