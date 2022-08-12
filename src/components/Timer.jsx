@@ -8,11 +8,18 @@ import {VscDebugRestart} from 'react-icons/vsc';
 function Timer({ lengthLabel, resetLengths, flipTimer, disableLengthSetters, label }) {
     const [time, setTime] = useState(lengthLabel);
     const [isCounting, setIsCounting] = useState(false);
+    const [degree, setDegree] = useState(0);
+    const [speed, setSpeed] = useState(360 / lengthLabel);
 
     useEffect(() => {
         let audio = document.getElementById('beep');
         audio.volume = 0.4;
+
+        let clock = document.getElementById('clock');
+        clock.style.backgroundColor = '#01D86D';
+
         setTime(lengthLabel);
+        setSpeed(360 / lengthLabel);
     }, [lengthLabel, label]);
 
     const countdown = () => {
@@ -20,6 +27,9 @@ function Timer({ lengthLabel, resetLengths, flipTimer, disableLengthSetters, lab
             if (time === 49) {
                 let audio = document.getElementById('beep');
                 audio.play();
+
+                let clock = document.getElementById('clock');
+                clock.style.backgroundColor = '#F73349';
             }
             setTime(time - 1);
         } else {
@@ -27,8 +37,15 @@ function Timer({ lengthLabel, resetLengths, flipTimer, disableLengthSetters, lab
         }
     };
 
+    const rotate = () => {
+        let progress = document.getElementById('moving-line');
+        progress.style.transform = `rotate(-${degree}deg)`;
+        setDegree(degree + speed);
+    }
+
     useInterval(() => {
         countdown();
+        rotate();
     }, isCounting ? 1000 : null);
 
 
@@ -59,6 +76,11 @@ function Timer({ lengthLabel, resetLengths, flipTimer, disableLengthSetters, lab
             audio.pause();
             audio.currentTime = 0;
         }
+        // restore progress line
+        let progress = document.getElementById('moving-line');
+        progress.style.transform = `rotate(0deg)`;
+
+        setDegree(360 / lengthLabel);
         setIsCounting(false);
         setTime(lengthLabel);
         resetLengths();

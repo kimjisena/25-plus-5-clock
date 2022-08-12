@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
+// import useInterval from '../hooks/useInterval';
 
 function ProgressLine({width}) {
-
-    const [degree, setDegree] = useState(1);
-    const [go, setGo] = useState(false);
 
     useEffect(() => {
         // oops, component has mounted
@@ -14,43 +12,29 @@ function ProgressLine({width}) {
 
         // get node and line
         let line = document.getElementById('line');
+        let movingLine = document.getElementById('moving-line');
         let node = document.getElementById('node');
 
         // modify styles
         line.style.left = linePos;
         line.style.width = lineWidth;
+
+        movingLine.style.left = linePos;
+        movingLine.style.width = lineWidth;
+
         node.style.left = nodePos;
 
         // display the magic
-        //node.style.backgroundColor = '#C56F17';
-        line.style.backgroundColor = '#F73349';
+        node.style.backgroundColor = '#444549';
+        line.style.backgroundColor = '#444549';
+        movingLine.style.backgroundColor = '#444549';
 
-        setGo(true);
     }, [width]);
-
-    const handleRotation = () => {
-        let rotateId;
-
-        function rotate () {
-            if (degree === 360) {
-                clearInterval(rotateId);
-                return (0);
-            }
-            const progress = document.getElementById('line');
-            progress.style.transform = `rotate(-${degree})deg`;
-            setDegree(degree + 1);
-        }
-        
-        rotateId = setInterval(rotate, 166.67);
-    }
-
-    if (go) {
-        handleRotation();
-    }
 
     return (
         <div>
-            <div id='line' className={`line absolute h-1/2`}>
+            <div id='line' className={`line absolute h-1/2`} />
+            <div id='moving-line' className={`line absolute h-1/2`}>
                 <div id='node' className={`node absolute w-[18.4px] h-5 rounded-full`}></div>
             </div>
         </div>
