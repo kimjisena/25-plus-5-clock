@@ -5,7 +5,7 @@ import {VscDebugPause} from 'react-icons/vsc';
 import {VscDebugStart} from 'react-icons/vsc';
 import {VscDebugRestart} from 'react-icons/vsc';
 
-function Timer({ lengthLabel, resetLengths, flipTimer, handleLengthSetters, label }) {
+function Timer({ lengthLabel, resetLengths, flipTimer, disableLengthSetters, label }) {
     const [mins, setMins] = useState(lengthLabel);
     const [secs, setSecs] = useState(0);
     const [isCounting, setIsCounting] = useState(false);
@@ -32,7 +32,6 @@ function Timer({ lengthLabel, resetLengths, flipTimer, handleLengthSetters, labe
                 });
             } else {
                 flipTimer();
-                // setIsCounting(false);
             }
         }
     };
@@ -45,10 +44,10 @@ function Timer({ lengthLabel, resetLengths, flipTimer, handleLengthSetters, labe
     const handleStartStop = () => {
         if (isCounting) {
             setIsCounting(false);
-            handleLengthSetters(false);
+            disableLengthSetters(false);
         } else {
             setIsCounting(true);
-            handleLengthSetters(true);
+            disableLengthSetters(true);
         }
     };
 
@@ -57,7 +56,7 @@ function Timer({ lengthLabel, resetLengths, flipTimer, handleLengthSetters, labe
         setMins(lengthLabel);
         setSecs(0);
         resetLengths();
-        handleLengthSetters(false);
+        disableLengthSetters(false);
     };
 
   return (
