@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from 'react';
-// import useInterval from '../hooks/useInterval';
+import React, {useEffect} from 'react';
 
 function ProgressLine({width}) {
 
